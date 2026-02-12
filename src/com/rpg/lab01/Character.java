@@ -18,7 +18,7 @@ public class Character {
     }
 
     public int attack() {
-        int bonus = level * 2; // Calculation logic from sample [cite: 195]
+        int bonus = level * 2;
         int totalDamage = weapon.getDamage() + bonus;
         System.out.println(name + " (" + jobClass + ") attacks with " + weapon.getName() + "!");
         System.out.println("Attack Damage: " + totalDamage + " (Weapon Base: " + weapon.getDamage() + " + Level Bonus: " + bonus + ")");
@@ -32,7 +32,7 @@ public class Character {
 
     public void levelUp() {
         this.level++;
-        this.maxHp += 10; // Match example: 1500 to 1510 [cite: 208]
+        this.maxHp += 10;
         this.hp = maxHp;
         System.out.println(name + " leveled up to Level " + level + "!");
         System.out.println("Max Health increased to " + maxHp + " (full heal applied)");
