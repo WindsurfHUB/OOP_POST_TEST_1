@@ -73,14 +73,21 @@ public class Book {
         }
     }
 
-    public void checkOut() {
+    public void checkOut(Member borrower) {
         if ("Borrowed".equalsIgnoreCase(this.status)) {
             System.out.println("Error: Book "+ this.title + " is already borrow and can not be checked out again");
             return;
         }
+        if (!borrower.canBorrow()) {
+            System.out.println("Member " + borrower.getName() + " has reached the borrow limit (3).");
+            System.out.println("Borrow request denied for member " + borrower.getName() + ".");
+            return;
+        }
         this.status = "Borrowed";
-        this.returnDueDate = LocalDate.now().plusDays(14);
+        this.returnDueDate = LocalDate.now().plusDays(1);
+        borrower.incrementBorrowedCount();
         System.out.println("Book: " + this.title + " has been checked out successfully.");
+        System.out.println("Book " + this.title + "has been borrow by " + borrower.getName() + ".");
         System.out.println("Return Due Date: "+ this.returnDueDate);
     }
 
@@ -88,5 +95,9 @@ public class Book {
         this.status= "Available";
         this.returnDueDate = null;
         System.out.println("Book " + this.title + " has been returned successfully");
+    }
+
+    public void printSummmary() {
+        System.out.println("Book [Title= " + title + ", Status= " + status + "]");
     }
 }
