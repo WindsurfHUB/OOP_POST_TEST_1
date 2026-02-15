@@ -3,8 +3,8 @@ package com.rpg.lab01;
 public class Healer extends Character {
     private int baseHealingPower;
 
-    public Healer(String name, int level, int hp, Weapon weapon, int healPower) {
-        super(name, level, hp, weapon, "Healer");
+    public Healer(String name, int level, int hp, int baseDamage, int defense, Weapon weapon, int healPower) {
+        super(name, level, hp, baseDamage, defense, weapon, "Healer");
         this.baseHealingPower = healPower;
     }
 
