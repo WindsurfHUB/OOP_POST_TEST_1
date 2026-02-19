@@ -1,52 +1,86 @@
 package com.library.lab03;
 
-import com.library.lab01.Book;
-import com.library.lab01.Member;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryManagementApp {
     public static void main(String[] args) {
         System.out.println("\n" + "=".repeat(60));
-        System.out.println(" LIBRARY MANAGEMENT SYSTEM - DEMONSTRATION");
+        System.out.println(" LIBRARY MANAGEMENT SYSTEM POLYMORPHISM DEMO");
         System.out.println("=".repeat(60));
 
-        List<Book> books = new ArrayList<>();
+        List<PhysicalBook> physicalBooks = new ArrayList<>();
+        List<EBook> eBooks = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
-            books.add(new Book("Java Programming", "John Smith", "123-456", 450.0, "Available"));
-            books.add(new Book("OOP Concepts", "Will Jones", "999-888", 590.0, "Available"));
-        }
+        physicalBooks.add(new PhysicalBook("Java Programming", "John Smith", "978-0134685991", 450.0, "A1-04"));
+        physicalBooks.add(new PhysicalBook("Clean Code", "Robert Martin", "978-0132350884", 520.0, "B2-15"));
+        physicalBooks.add(new PhysicalBook("Design Patterns", "Gang of Four", "978-0201633612", 680.0, "A3-22"));
+
+        eBooks.add(new EBook("Effective Java", "Joshua Bloch", "978-0134685991", "https://library.ebooks.com/effective-java.pdf", 5.2));
+        eBooks.add(new EBook("Python Crash Course", "Eric Matthes", "978-1593279288", "https://library.ebooks.com/python-crash.pdf", 8.7));
 
         Member member1 = new Member("M001", "Somsak");
+        Member member2 = new Member("M002", "Suda");
 
-        System.out.println("\n--- Initial Book Information ---");
-        for (Book book : books) {
-            book.printSummmary();
+        System.out.println("\n--- ALL LIBRARY ITEMS (Polymorphism Demo) ---");
+        System.out.println("Calling displayDetails() on each item in the list:\n");
+
+        for (PhysicalBook item : physicalBooks) {
+            item.displayDetails();
+        }
+        for (EBook item : eBooks) {
+            item.displayDetails();
         }
 
-        System.out.println("\n--- Testing checkOut() Method ---");
-        System.out.println("\nAttempting to checkout Book 1 and Book 2 (Available):");
+        System.out.println("\n--- TESTING CHECKOUT FUNCTIONALITY ---");
+        System.out.println("\nMember Somsak borrows Physical Book:");
+        physicalBooks.get(0).checkOut(member1);
 
-        books.get(0).checkOut(member1);
-        books.get(1).checkOut(member1);
+        System.out.println("\nMember Suda borrows E-Book:");
+        eBooks.get(1).checkOut(member2);
 
-        System.out.println("\nAttempting to checkout Book 2 again (Already Borrowed):");
-        books.get(1).checkOut(member1); // [cite: 277, 301]
+        System.out.println("\nAttempting to checkout an already borrowed item:");
+        physicalBooks.get(0).checkOut(member2);
 
-        System.out.println("\n--- Testing returnBook() Method ---");
-        System.out.println("\nReturning Book 1:");
-        books.get(0).returnBook(); // [cite: 280, 304]
+        System.out.println("\n--- ITEMS STATUS AFTER CHECKOUT ---");
+        for (PhysicalBook item : physicalBooks) {
+            item.printSummary();
+        }
 
-        System.out.println("\n--- Challenging Scenario: Borrowing Limit ---");
-        books.get(2).checkOut(member1);
-        books.get(3).checkOut(member1);
-        books.get(4).checkOut(member1);
+        System.out.println("\n--- TESTING RETURN FUNCTIONALITY ---");
+        System.out.println("\nReturning Physical Book:");
+        physicalBooks.get(0).returnItem();
 
-        System.out.println("\n--- Final Book Information ---");
-        for (Book book : books) {
-            book.printSummmary();
+        System.out.println("\n--- TESTING BORROW LIMIT ---");
+        physicalBooks.get(0).checkOut(member1);
+        physicalBooks.get(1).checkOut(member1);
+        physicalBooks.get(2).checkOut(member1);
+        eBooks.get(1).checkOut(member1);
+
+        System.out.println("\n--- FINAL LIBRARY STATUS (Polymorphism Demo) ---");
+        for (PhysicalBook item : physicalBooks) {
+            item.displayDetails();
+        }
+        for (EBook item : eBooks) {
+            item.displayDetails();
+        }
+
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println(" METHOD OVERRIDING: LATE FEE CALCULATION DEMO");
+        System.out.println("=".repeat(60));
+
+        int daysLate = 5;
+        System.out.println("\n--- Late Fee Calculation (" + daysLate + " days late) ---");
+        System.out.println("\nPhysical Books (5 Baht per day late fee):");
+        for (PhysicalBook book : physicalBooks) {
+            double lateFee = book.calculateLateFee(daysLate);
+            System.out.printf("%s: %.2f Baht\n", book.getTitle(), lateFee);
+        }
+
+        System.out.println("\nE-Books (NO late fees files auto-expire):");
+        for (EBook book : eBooks) {
+            double lateFee = book.calculateLateFee(daysLate);
+            System.out.printf("%s: %.2f Baht\n", book.getTitle(), lateFee);
         }
     }
 }

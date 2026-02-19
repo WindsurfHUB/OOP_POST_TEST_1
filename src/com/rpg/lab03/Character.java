@@ -32,7 +32,7 @@ public class Character {
     public void receiveDamage(double rawDamage) {
         double actualDamage = Math.max(0.0, rawDamage - defense);
         this.hp = Math.max(0.0, this.hp - actualDamage);
-
+        
         System.out.println(name + "'s Defense: " + (int)defense + " (reduces damage from " + (int)rawDamage + " to " + (int)actualDamage + ")");
         System.out.println("Actual Damage Taken: " + (int)actualDamage);
         System.out.println(name + "'s HP: " + (int)hp + "/" + (int)maxHp);

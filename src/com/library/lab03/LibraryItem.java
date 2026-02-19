@@ -1,105 +1,66 @@
 package com.library.lab03;
 
-import com.library.lab01.Member;
-
 import java.time.LocalDate;
 
 public class LibraryItem {
     private String title;
     private String author;
     private String isbn;
-    private Double price;
+    private double price;
     private String status;
     private LocalDate returnDueDate;
 
-
-    public LibraryItem(String title, String author, String isbn, Double price, String status) {
+    public LibraryItem(String title, String author, String isbn, double price, String status) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.price = price;
         this.status = status;
         this.returnDueDate = null;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void displayDetails() {
-        System.out.println("- Title: " + title);
-        System.out.println("- Author: " + author);
-        System.out.println("- Isbn: " + isbn);
-        System.out.println("- Price: " + price);
-        System.out.println("- Status" + status);
-        if ("Available".equalsIgnoreCase(status)) {
-                System.out.println("Return Due Date: N/A (Book is available)");
-            } else {
-            System.out.println("- Return Due Date: " + returnDueDate);
-        }
     }
 
     public void checkOut(Member borrower) {
         if ("Borrowed".equalsIgnoreCase(this.status)) {
-            System.out.println("Error: Book "+ this.title + " is already borrow and can not be checked out again");
+            System.out.println("Error: Item '" + this.title + "' is already borrowed and cannot be checked out again.");
             return;
         }
+
         if (!borrower.canBorrow()) {
-            System.out.println("Member " + borrower.getName() + " has reached the borrow limit (3).");
-            System.out.println("Borrow request denied for member " + borrower.getName() + ".");
+            System.out.println("Member " + borrower.getName() + " has reached the borrow limit.");
             return;
         }
+
         this.status = "Borrowed";
-        this.returnDueDate = LocalDate.now().plusDays(1);
+        this.returnDueDate = LocalDate.now().plusDays(14);
         borrower.incrementBorrowedCount();
-        System.out.println("Book: " + this.title + " has been checked out successfully.");
-        System.out.println("Book " + this.title + "has been borrow by " + borrower.getName() + ".");
-        System.out.println("Return Due Date: "+ this.returnDueDate);
+
+        System.out.println("Item '" + this.title + "' has been checked out successfully.");
+        System.out.println("Item '" + this.title + "' has been borrowed by " + borrower.getName() + ".");
+        System.out.println("Return Due Date: " + this.returnDueDate);
     }
 
-    public void returnBook() {
-        this.status= "Available";
+    public void returnItem() {
+        this.status = "Available";
         this.returnDueDate = null;
-        System.out.println("Book " + this.title + " has been returned successfully");
+        System.out.println("Item '" + this.title + "' has been returned successfully.");
     }
 
-    public void printSummmary() {
-        System.out.println("Book [Title= " + title + ", Status= " + status + "]");
+    public void displayDetails() {
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("ISBN: " + isbn);
+        System.out.println("Price: " + price + " Baht");
     }
+
+    public double calculateLateFee(int daysLate) {
+        return 0.0;
+    }
+
+    public void printSummary() {
+        System.out.println("Item [Title='" + title + "', Status='" + status + "']");
+    }
+
+    public String getTitle() { return title; }
+    public String getStatus() { return status; }
+    public LocalDate getReturnDueDate() { return returnDueDate; }
 }
